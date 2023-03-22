@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from .models import clothes
 
 
 laundry_history=[
@@ -38,7 +39,7 @@ laundry_history=[
 def home(request):
     #return HttpResponse('<h1>Laundry Home</h1>')
     context={
-        'history':laundry_history
+        'history': clothes.objects.all()
     }
     return render(request,'laundry/home.html',context)
 
