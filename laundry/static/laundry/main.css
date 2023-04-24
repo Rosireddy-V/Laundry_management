@@ -1,5 +1,6 @@
 body {
-    background: #fafafa;
+    background: #aaf5eb;
+    background-image: url("laundry/img/WhatsApp\ Image\ 2023-04-17\ at\ 23.52.07.jpg"),url('laundry/img/logout_photo.jpg');
     color: #333333;
     margin-top: 5rem;
   }
@@ -11,17 +12,36 @@ body {
   ul {
     margin: 0;
   }
+
+  .bg {
+    /* The image used */
+    background-image: url('laundry/img/logout_photo.jpg');
+  
+    /* Full height */
+    height: 100%; 
+  
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
   
   .bg-steel {
-    background-color: #060606;
+    background-color: #020202;
   }
   
   .site-header .navbar-nav .nav-link {
     color: #f54910;
   }
+
+  .logo-img{
+    float: left;
+    position: relative;
+    margin: 10px 15px 15px 10px;
+}
   
   .site-header .navbar-nav .nav-link:hover {
-    color: #ffffff;
+    color: #fa0303;
   }
   
   .site-header .navbar-nav .nav-link.active {
@@ -34,6 +54,34 @@ body {
     border: 1px solid #0b0b0b;
     border-radius: 3px;
     margin-bottom: 20px;
+  }
+
+  #btn-nav{
+    float:right ;
+    margin-right: 45px;
+    font-size: 20px;
+
+  }
+
+  .total, .pending{
+    position: absolute;
+    border-radius: 50%;
+    font-size: 13px;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    margin-top: -32px;
+  }
+
+  .total{
+    margin-left: 14px;
+    background-color: blue;
+  }
+
+  .pending{
+    margin-left: 10px;
+    background-color: red;
   }
   
   .article-title {

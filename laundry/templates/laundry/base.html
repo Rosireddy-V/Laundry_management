@@ -12,34 +12,168 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     
     <link rel="stylesheet" type="text/css" href="{%static 'laundry/main.css'%}">
+    <script src="https://kit.fontawesome.com/5135d630a7.js" crossorigin="anonymous"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.3/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.3/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.3/firebase-messaging.js"></script>
     {% if title %}
         <title>Laundry - {{title}}</title>
     {%else%}
         <title>Laundry-Home</title>
     {% endif %}
+    <style>
+      .notification {
+          background-color: #0d6efd;
+          color: white;
+          text-decoration: none;
+          padding: 4px 24px;
+          margin-right: 20px;
+          margin-left: 20px;
+          position: relative;
+          display: inline-block;
+          border-radius: 2px;
+          font-size: 20px;
+      }
+
+      .notification:hover {
+          background: #0b5ed7;
+          color: #fff;
+      }
+
+      .notification .badge {
+          position: absolute;
+          top: -10px;
+          right: -10px;
+          padding: 8px 8px;
+          border-radius: 50%;
+          background: red;
+          color: white;
+      }
+
+      .notification-section .dropdown-toggle::after {
+          content: none;
+      }
+
+      .dropdown-toggle::after {
+          color: #fff;
+      }
+
+      #notifications-dropdown li {
+          max-width: 500px;
+          word-wrap: break-word;
+          display: inline-block;
+            white-space: normal;
+        }
+
+        #notifications-dropdown.dropdown-menu {
+            width: 15rem;
+        }
+        
+    </style>
+    {% block css %} {% endblock %}
+    
 </head>
 <body>
     <header class="site-header" >
         <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
           <div class="container">
-            <a class="navbar-brand mr-4" href="{%url 'laundry-home'%}" style="font-size: 2rem;">Laundry-Management</a>
+            {% if user.is_authenticated%}
+              <img class="logo-img mr-4" src="{% static 'laundry/img/laundry_logo.jpg'%}" width="35" height="35">
+              <a class="navbar-brand mr-4" href=" " style="font-size: 2rem;">Laundry-Management</a>
+            {% else %}
+              <img class="logo-img mr-4" src="{% static 'laundry/img/laundry_logo.jpg'%}" width="35" height="35">
+              <a class="navbar-brand mr-4" href="#" style="font-size: 2rem;">Laundry-Management</a>
+            {% endif %}
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+              <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarToggle">
               <div class="navbar-nav mr-auto">
-                <a class="nav-item nav-link" href="{%url 'laundry-home'%}">Home</a>
-                <a class="nav-item nav-link" href="{%url 'laundry-about'%}">About</a>
+                {% if user.is_staff%}
+                  <a class="nav-item nav-link" href="{%url 'addcloth'%}">Add Cloth</a>
+                {% elif user.is_authenticated%}
+                  <a class="nav-item nav-link" href="{%url 'home'%}">Home</a>
+                  <a class="nav-item nav-link" href="{%url 'laundryquery'%}">Query</a>
+                {% endif %}
+                
               </div>
+              
               <!-- Navbar Right Side -->
               <div class="navbar-nav">
-                <a class="nav-item nav-link" href="#" style="font-family:verdana;">Login</a>
-                <a class="nav-item nav-link" href="#" style="font-family:verdana;">Register</a>
+                <!--<div class="col-sm">
+                  <a class="text-light" id="btn-nav">
+                    <i class="fas fa-bell"></i><span class="pending">5</span>
+  
+                  </a>
+                  <a class="text-light" id="btn-nav">
+                    <i class="fas fa-envelope"></i><span class="total">7</span>
+
+                  </a>
+  
+                </div>-->
+                <!--<li class="nav-item dropdown notification-section">
+                  <a href="#" class="notification dropdown-toggle" id="navbarDropdown" role="button"
+                      data-bs-toggle="dropdown" aria-expanded="true">
+                      <span><i class='fa fa-bell'></i></span>
+                      <span class="badge" id="notification-badge">0</span>
+                  </a>
+                  <ul class="dropdown-menu" aria-labelledby="navbarDropdown" id="notifications-dropdown"
+                      data-popper-placement="bottom-end"
+                      style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate3d(-70px, 42px, 0px);">
+                      
+                      {% for i in notifications %}
+                      <li class="dropdown-item">{{i.message}}</li>
+                      <hr class="dropdown-divider">
+                      {% endfor %}
+                      <li class='dropdown-item'>Hello</li>
+                      <hr class="dropdown-divider"> 
+                      
+                  </ul>
+                </li>-->
+                {% if user.is_staff %}
+                  <a class="nav-item nav-link" href="{% url 'profile'%}" style="font-family:verdana;">Profile</a>
+                  <a class="nav-item nav-link" href="{% url 'logout'%}" style="font-family:verdana;">Logout</a>
+                {% elif user.is_authenticated%}
+                  <a class="nav-item nav-link" href="{% url 'profile'%}" style="font-family:verdana;">Profile</a>
+                  <a class="nav-item nav-link" href="{% url 'logout'%}" style="font-family:verdana;">Logout</a>
+                {% else %}
+                  <a class="nav-item nav-link" href="{% url 'login'%}" style="font-family:verdana;">Login</a>
+                  <a class="nav-item nav-link" href="{%url 'register'%}" style="font-family:verdana;">Register</a>
+                {% endif %}
               </div>
             </div>
           </div>
         </nav>
     </header>
+    {{ room_name|json_script:"room-name" }}
+    <script>
+        const roomName = JSON.parse(document.getElementById('room-name').textContent);
+
+        const chatSocket = new WebSocket(
+            'ws://'
+            + window.location.host
+            + '/ws/notification/'
+            + roomName
+            + '/'
+        );
+
+        chatSocket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            //document.querySelector('#chat-log').value += (data.message + '\n');
+            console.log(data);
+            //document.getElementById("notifications-dropdown").innerHTML = "<li class='dropdown-item'>" + data + "</li><hr class='dropdown-divider'>" + document.getElementById("notifications-dropdown").innerHTML;
+            //document.getElementById("notification-badge").innerHTML = parseInt(document.getElementById("notification-badge").innerHTML) + 1;
+        };
+
+        chatSocket.onclose = function(e) {
+            console.error('Chat socket closed unexpectedly');
+        };
+
+      
+
+       
+    </script>
+
     <main role="main" class="container">
         <div class="row">
           <div class="col-md-8">
@@ -53,19 +187,7 @@
             {%endif%}
             {% block content %}{% endblock %}
           </div>
-          <div class="col-md-4">
-            <div class="content-section">
-              <h3>My Sidebar</h3>
-              <p class='text-muted'>You can put any information here you'd like.
-                <ul class="list-group">
-                  <li class="list-group-item list-group-item-light">Latest Posts</li>
-                  <li class="list-group-item list-group-item-light">Announcements</li>
-                  <li class="list-group-item list-group-item-light">Calendars</li>
-                  <li class="list-group-item list-group-item-light">More...</li>
-                </ul>
-              </p>
-            </div>
-          </div>
+          
         </div>
     </main>  
     

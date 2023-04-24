@@ -1,0 +1,25 @@
+{%extends "laundry/base.html"%}
+
+{%block content%}
+<article class="media content-section">
+    <div class="media-body">
+        <div class="article-metadata">
+            <a class="mr-2">{{object.std}}</a>
+            <small class="text-muted">{{object.Date}}</small>
+
+        </div>
+        <p style="font-family:verdana;"><strong>Kurta-></strong> {{object.Kurta}}</p>
+        <p style="font-family:verdana;"><strong>Pajama-></strong> {{object.Pajama}}</p>
+        <p style="font-family:verdana;"><strong>Shirt-></strong> {{object.Shirt}}</p>
+        <p style="font-family:verdana;"><strong>T_Shirt-></strong> {{object.T_Shirt}}</p>
+        <p style="font-family:verdana;"><strong>Pant-></strong> {{object.Pant}}</p>
+        <p style="font-family:verdana;"><strong>Lower-></strong> {{object.Lower}}</p>
+        <p style="font-family:verdana;"><strong>Shorts-></strong> {{object.Shorts}}</p>
+        <p style="font-family:verdana;"><strong>Bedsheet-></strong> {{object.Bedsheet}}</p>
+        <p style="font-family:verdana;"><strong>Pillow_Cover-></strong> {{object.Pillow_Cover}}</p>
+        <p style="font-family:verdana;"><strong>Towel-></strong> {{object.Towel}}</p>
+        <p style="font-family:verdana;"><strong>Dupatta-></strong> {{object.Dupatta}}</p>
+        <p style="font-family:verdana;"><strong>Total Clothes = </strong> {{object.get_total}}</p>
+    </div>
+</article>
+{%endblock content%}

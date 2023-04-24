@@ -1,0 +1,20 @@
+{%extends "laundry/base.html"%}
+{% load crispy_forms_tags %}
+
+{%block content%}
+<style>
+    body{
+         background-image: url('https://img.freepik.com/free-vector/colorful-vintage-retro-background_36662-1295.jpg');
+        
+    }
+</style>
+        <p style="color:red">You have been logged out</p>
+        <div class="border-top pt-3">
+            <small class="text-muted">
+                 <a class="ml-2" href="{% url 'login'%}" style="color:black">Login again</a>
+
+            </small>
+
+        </div>
+
+{%endblock content%}

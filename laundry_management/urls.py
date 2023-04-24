@@ -14,9 +14,32 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.contrib.auth import views as auth_views
+from django.contrib.auth.decorators import login_required
 from django.urls import path, include
+from django.conf import settings 
+from django.conf.urls.static import static
+from user import views as user_views
+from laundry import views as laundry_views 
+from laundry.views import clothdetailview, clothlistview
+
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',include('laundry.urls')),
+    path('register/',user_views.register,name='register'),
+    path('profile/',user_views.profile,name='profile'),
+    path('addcloth/',laundry_views.add_cloth,name='addcloth'),
+    path('query/',laundry_views.laundry_query,name='laundryquery'),
+    path('home/',laundry_views.home,name='home'),
+    path('about/<int:pk>/',clothdetailview.as_view(),name='about'),
+    path('',auth_views.LoginView.as_view(template_name='user/login.html'),name='login'),
+    path('logout/',auth_views.LogoutView.as_view(template_name='user/logout.html'),name='logout'),
+    path('passwordreset/done/',auth_views.PasswordResetDoneView.as_view(template_name='user/password_reset_done.html'),name='prd'),
+     path('passwordresetcomplete/',auth_views.PasswordResetCompleteView.as_view(template_name='user/password_reset_complete.html'),name='prc'),
+    path('passwordreset/',auth_views.PasswordResetView.as_view(template_name='user/password_reset.html',success_url='/passwordreset/done/'),name='pr'),
+    path('passwordresetconfirm/<uidb64>/<token>/',auth_views.PasswordResetConfirmView.as_view(template_name='user/password_reset_confirm.html',success_url='/passwordresetcomplete/'),name='password_reset_confirm'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

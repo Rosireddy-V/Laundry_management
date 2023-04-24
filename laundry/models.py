@@ -24,10 +24,16 @@ class clothe(models.Model):
     std = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
-        return str(self.std_id)
+        return str(self.std_id) 
+    
     
 
 class clothes(models.Model):
+
+    STATUS = (
+        ('Pending','pending'),
+        ('Completed','completed')
+    )
     Date = models.DateTimeField(auto_now_add=True)
     Kurta = models.IntegerField()
     Pajama = models.IntegerField()
@@ -41,6 +47,24 @@ class clothes(models.Model):
     Towel = models.IntegerField()
     Dupatta = models.IntegerField()
     std = models.ForeignKey(User, on_delete=models.CASCADE)
+    status = models.CharField(default='Pending',max_length=15, choices=STATUS)
 
     def __str__(self):
         return str(self.std_id)
+    
+    @property
+    def get_total(self):
+        total = self.Kurta+self.Pajama+self.Shirt+self.T_Shirt+self.Pant+self.Lower+self.Shorts+self.Bedsheet+self.Pillow_Cover+self.Towel+self.Dupatta
+        return total
+    
+
+
+
+
+class query(models.Model):
+    Date = models.DateTimeField(auto_now_add=True)
+    Laundry_id = models.IntegerField()
+    Problem = models.TextField(max_length=200)
+
+    def __str__(self):
+        return str(self.cloth_id)

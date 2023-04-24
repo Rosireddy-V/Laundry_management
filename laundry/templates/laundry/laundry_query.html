@@ -1,0 +1,23 @@
+{%extends "laundry/base.html"%}
+{% load crispy_forms_tags %}
+
+{%block content%}
+<!--<div class="col-md-4">-->
+    <div class="content-section">
+      <h3>Query Section!</h3>
+      <p class='text-muted'>Write your queries here.
+        <form method="POST">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                {{form|crispy}}
+
+            </fieldset>
+            <div class="form-group">
+                <button class="btn btn-outline-info" type="submit">Submit</button>
+
+            </div>
+        </form>
+      </p>
+    </div>
+  <!--</div>-->
+{%endblock content%}
